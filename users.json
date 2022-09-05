@@ -1,0 +1,43 @@
+[{
+        "name": "ilya",
+        "email": "ilyarest",
+        "login": "ilya123",
+        "password": "123",
+        "confirm_password": "123"
+    },
+    {
+        "name": "manao",
+        "email": "manaodev",
+        "login": "company",
+        "password": "321",
+        "confirm_password": "321"
+    },
+    {
+        "name": "Nie",
+        "email": "simple123",
+        "login": "gabe",
+        "password": "123",
+        "confirm_password": "123"
+    },
+    {
+        "name": "ss",
+        "email": "ss@mail.ru",
+        "login": "daasdasd",
+        "password": "a32994b2bfd59291e825b5f2bbf1eb76569f8fe7",
+        "confirm_password": "a32994b2bfd59291e825b5f2bbf1eb76569f8fe7"
+    },
+    {
+        "name": "tr",
+        "email": "tr@gmail.com",
+        "login": "replay",
+        "password": "a32994b2e120ea280aa50693d5568d0071456460",
+        "confirm_password": "a32994b2e120ea280aa50693d5568d0071456460"
+    },
+    {
+        "name": "tr",
+        "email": "tr@gmail.com",
+        "login": "replays",
+        "password": "a32994b2e120ea280aa50693d5568d0071456460",
+        "confirm_password": "a32994b2e120ea280aa50693d5568d0071456460"
+    }
+]

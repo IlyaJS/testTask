@@ -1,0 +1,24 @@
+li {
+    list-style-type: none;
+}
+
+ul {
+    margin-left: 0;
+    padding-left: 0;
+}
+
+.none {
+    display: none;
+}
+
+.error {
+    border-bottom: 2px solid red;
+}
+
+input {
+    margin-top: 2px;
+}
+
+.userAutNone {
+    display: none;
+}
