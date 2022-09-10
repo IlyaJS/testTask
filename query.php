@@ -21,14 +21,50 @@ $password = clear_data($jsonData['password']);
 $confirm_password = clear_data($jsonData['confirm_password']);
 
 $pattern_name = '/^[0-9a-zA-Z]{2}$/';
-$pattern_email = '/^(?!.*@.*@.*$)(?!.*@.*--.*\..*$)(?!.*@.*-\..*$)(?!.*@.*-$)((.*)?@.+(\..{1,11})?)$/';
-$pattern_login = '/^.{6,}$/';
+/* $pattern_email = '/^(?!.*@.*@.*$)(?!.*@.*--.*\..*$)(?!.*@.*-\..*$)(?!.*@.*-$)((.*)?@.+(\..{1,11})?)$/'; */
+$pattern_email = '/^[^\s()-]*$/';
+$pattern_login = '/^[^\s()-]{6,}$/';
 $pattern_password = '/[0-9a-zA-Z]{6,}/';
 $pattern_confirm_password = '/[0-9a-zA-Z]{6,}/';
 
 
 $errorFields = [];
 $errorFieldsvalid = [];
+$errorFieldsText = [];
+
+/* Проверка на существующего пользователя */
+$jsonFile = file_get_contents('users.json');
+$jsonFileData = json_decode($jsonFile, true);
+foreach ($jsonFileData as $key => $value) {
+    if ($value['login'] == $login) {
+
+        $response = [
+            "status" => false,
+            "type" => 3,
+            "errormsg" => "Такой логин уже существует"
+
+        ];
+        echo json_encode($response);
+        die();
+    }
+}
+
+/* Проверка на адрес электронной почты */
+$jsonFile = file_get_contents('users.json');
+$jsonFileData = json_decode($jsonFile, true);
+foreach ($jsonFileData as $key => $value) {
+    if ($value['email'] == $email) {
+
+        $response = [
+            "status" => false,
+            "type" => 4,
+            "errormsg" => "Такой email уже существует"
+
+        ];
+        echo json_encode($response);
+        die();
+    }
+}
 
 if ($name === '') {
     $errorFields[] = 'name';
@@ -62,18 +98,23 @@ if (!empty($errorFields)) {
 
 if (!preg_match($pattern_name, $name)) {
     $errorFieldsvalid[] = 'name';
+    $errorFieldsText['name'] = "Ошибка должно быть 2 символа только буквы";
 }
-if (!preg_match($pattern_email, $email)) {
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     $errorFieldsvalid[] = 'email';
+    $errorFieldsText['email'] = "Ошибка ввдение email в формате support@gmail.com";
 }
 if (!preg_match($pattern_login, $login)) {
     $errorFieldsvalid[] = 'login';
+    $errorFieldsText['login'] = "Ошибка минимум 6 символов, без пробелов";
 }
 if (!preg_match($pattern_password, $password)) {
     $errorFieldsvalid[] = 'password';
+    $errorFieldsText['password'] = "Ошибка минимум 6 символов , обязательно должны состоять из цифр и букв";
 }
 if (!preg_match($pattern_confirm_password, $confirm_password)) {
     $errorFieldsvalid[] = 'confirm_password';
+    $errorFieldsText['confirm_password'] = "Ошибка минимум 6 символов , обязательно должны состоять из цифр и букв";
 }
 if (!empty($errorFieldsvalid)) {
 
@@ -81,7 +122,8 @@ if (!empty($errorFieldsvalid)) {
         "status" => false,
         "type" => 2,
         "errormsg" => "Ошибка валидации",
-        "fields" => $errorFieldsvalid
+        "fields" => $errorFieldsvalid,
+        "fieldsText" => $errorFieldsText
 
 
     ];
@@ -90,22 +132,6 @@ if (!empty($errorFieldsvalid)) {
     die();
 }
 
-
-$jsonFile = file_get_contents('users.json');
-$jsonFileData = json_decode($jsonFile, true);
-foreach ($jsonFileData as $key => $value) {
-    if ($value['login'] == $login) {
-
-        $response = [
-            "status" => false,
-            "type" => 3,
-            "errormsg" => "Такой логин уже существует"
-
-        ];
-        echo json_encode($response);
-        die();
-    }
-}
 
 if ($password === $confirm_password) {
     $salt = "a32994b2";

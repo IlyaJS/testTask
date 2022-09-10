@@ -19,25 +19,46 @@ $("document").ready(function() {
                 "dataQueryAut": jsonStrAut
             },
             success: function(data) {
+                $('.validErrorLoginAut').removeClass('none').text("");
+                $('.validErrorPasswordAut').removeClass('none').text("");
+                $('.msgaut').removeClass('none').text("");
 
 
-                if (data.status === true) {
-                    console.log(data);
-                    $('.statusSession').text("Вы авторизованы");
-                    $('.vision').addClass('userAutNone');
-                    $('.userAut').removeClass('userAutNone');
-                    $(`h1`).text(data.message + "-> User : " + data.name);
-                    $('input[name="nameUser"]').val(data.name);
-                    $('input[name="messageUser"]').val(data.message);
-
-                }
                 if (data.type === 1) {
                     data.fields.forEach(function(field) {
                         $(`input[name = "${field}"]`).addClass('error');
                     });
+                    $('.msgaut').removeClass('none').text(data.errormsg);
+                } else if (data.type === 2) {
+                    data.fields.forEach(function(field) {
+                        $(`input[name = "${field}"]`).addClass('error');
+                    });
+                    if (data.fieldsText.name !== '') {
+                        $('.validErrorLoginAut').removeClass('none').text(data.fieldsText.login);
+                    }
+                    if (data.fieldsText.name !== '') {
+                        $('.validErrorPasswordAut').removeClass('none').text(data.fieldsText.password);
+                    }
+                } else {
+
+                    if (data.status === true) {
+                        console.log(data);
+                        $('.statusSession').text("Вы авторизованы");
+                        $('.vision').addClass('userAutNone');
+                        $('.userAut').removeClass('userAutNone');
+                        $(`h1`).text(data.message + "-> User : " + data.name);
+                        $('input[name="nameUser"]').val(data.name);
+                        $('input[name="messageUser"]').val(data.message);
+
+                    } else if (data.status === false) {
+                        $('.msgaut').removeClass('none').text("Неверный логин или пароль");
+                    }
+
                 }
 
-                $('.msgaut').removeClass('none').text(data.errormsg);
+
+
+
             }
         });
     })
